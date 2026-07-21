@@ -1,0 +1,39 @@
+### Get all products
+GET http://localhost:3000/products
+
+### Get single product by id
+GET http://localhost:3000/products/6a5deaaa238cd869568fdc9c
+
+### Create a product
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "LICH Coaster Set",
+  "description": "Set of 4 3D printed geometric coasters",
+  "category": "Home Decor",
+  "material": "PLA",
+  "color": "Various",
+  "printTimeHours": 5,
+  "price": 220,
+  "inStock": true
+}
+
+### Get all orders
+GET http://localhost:3000/orders
+
+### Get single order by id
+GET http://localhost:3000/orders/6a5f52a9f2062e4a3b072152
+
+### Create an order
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "customerName": "Lerato Sithole",
+  "email": "lerato@example.com",
+  "productId": "PASTE_A_REAL_PRODUCT_ID",
+  "quantity": 1,
+  "status": "pending",
+  "orderDate": "2026-07-21"
+}
