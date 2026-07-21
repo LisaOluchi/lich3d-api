@@ -2,7 +2,7 @@
 GET http://localhost:3000/products
 
 ### Get single product by id
-GET http://localhost:3000/products/6a5deaaa238cd869568fdc9c
+GET http://localhost:3000/products/6a5f665dfc82b9c9b81a6049
 
 ### Create a product
 POST http://localhost:3000/products
@@ -26,20 +26,20 @@ GET http://localhost:3000/orders
 GET http://localhost:3000/orders/6a5f52a9f2062e4a3b072152
 
 ### Create an order
-POST http://localhost:3000/orders
+POST http://lich3d-api.onrender.com/orders
 Content-Type: application/json
 
 {
   "customerName": "Lerato Sithole",
-  "email": "lerato@example.com",
-  "productId": "6a5f6a7efc82b9c9b81a604a",
+  "email": "lerato@neworder.com",
+  "productId": "ID of the product being ordered",
   "quantity": 1,
   "status": "pending",
   "orderDate": "2026-07-21"
 }
 
 ### Update a product
-PUT http://localhost:3000/products/6a5f6a7efc82b9c9b81a604a
+PUT https://lich3d-api.onrender.com/products/6a5f665dfc82b9c9b81a6049
 Content-Type: application/json
 
 {
