@@ -32,8 +32,42 @@ Content-Type: application/json
 {
   "customerName": "Lerato Sithole",
   "email": "lerato@example.com",
-  "productId": "PASTE_A_REAL_PRODUCT_ID",
+  "productId": "6a5f6a7efc82b9c9b81a604a",
   "quantity": 1,
   "status": "pending",
   "orderDate": "2026-07-21"
 }
+
+### Update a product
+PUT http://localhost:3000/products/6a5f6a7efc82b9c9b81a604a
+Content-Type: application/json
+
+{
+  "name": "Cosmic Phone Case",
+  "description": "Updated precision-fit case with new grip texture",
+  "category": "Phone Accessories",
+  "material": "TPU",
+  "color": "Lavender",
+  "printTimeHours": 4,
+  "price": 300,
+  "inStock": true
+}
+
+### Delete a product
+DELETE http://localhost:3000/products/6a5f6a7efc82b9c9b81a604a
+
+### Update an order
+PUT http://localhost:3000/orders/6a5feea6ba0777cf61aa08c4
+Content-Type: application/json
+
+{
+  "customerName": "Lerato Sithole",
+  "email": "lerato@updated.com",
+  "productId": "6a5feea6ba0777cf61aa08c4",
+  "quantity": 2,
+  "status": "shipped",
+  "orderDate": "2026-07-21"
+}
+
+### Delete an order
+DELETE http://localhost:3000/orders/6a5fedffba0777cf61aa08c3
