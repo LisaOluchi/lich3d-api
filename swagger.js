@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://your-app.onrender.com',
+        url: 'https://lich3d-api.onrender.com',
         description: 'Render server'
       },
       {
