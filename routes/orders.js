@@ -4,7 +4,15 @@ const connectDB = require('../db');
 const { ObjectId } = require('mongodb');
 const { body, validationResult } = require('express-validator');
 
-// GET all orders
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     summary: Get all orders
+ *     responses:
+ *       200:
+ *         description: A list of orders
+ */
 router.get('/', async (req, res) => {
     try {
         const db = await connectDB();
@@ -15,7 +23,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET single order by id
+
+/**
+ * @swagger
+ * /orders/{id}:
+ *   get:
+ *     summary: Get an order by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A single order
+ *       404:
+ *         description: Order not found
+ */
 router.get('/:id', async (req, res) => {
     try {
         const db = await connectDB();
@@ -29,7 +54,36 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST - create a new order
+/**
+ * @swagger
+ * /orders:
+ *   post:
+ *     summary: Create a new order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               productId:
+ *                 type: string
+ *               quantity:
+ *                 type: number
+ *               status:
+ *                 type: string
+ *               orderDate:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Order created
+ *       400:
+ *         description: Validation error
+ */
 router.post('/',
     body('customerName').notEmpty().withMessage('Customer name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
@@ -57,7 +111,44 @@ router.post('/',
     }
 );
 
-// PUT - update an order
+/**
+ * @swagger
+ * /orders/{id}:
+ *   put:
+ *     summary: Update an order
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               productId:
+ *                 type: string
+ *               quantity:
+ *                 type: number
+ *               status:
+ *                 type: string
+ *               orderDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Order updated
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: Order not found
+ */
 router.put('/:id',
     body('customerName').notEmpty().withMessage('Customer name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
@@ -90,7 +181,23 @@ router.put('/:id',
     }
 );
 
-// DELETE - remove an order
+/**
+ * @swagger
+ * /orders/{id}:
+ *   delete:
+ *     summary: Delete an order
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Order deleted
+ *       404:
+ *         description: Order not found
+ */
 router.delete('/:id', async (req, res) => {
     try {
         const db = await connectDB();

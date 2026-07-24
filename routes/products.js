@@ -4,7 +4,15 @@ const connectDB = require('../db');
 const { ObjectId } = require('mongodb');
 const { body, validationResult } = require('express-validator');
 
-// GET all products
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get all products
+ *     responses:
+ *       200:
+ *         description: A list of products
+ */
 router.get('/', async (req, res) => {
     try {
         const db = await connectDB();
@@ -15,7 +23,23 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET single product by id
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a product by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A single product
+ *       404:
+ *         description: Product not found
+ */
 router.get('/:id', async (req, res) => {
     try {
         const db = await connectDB();
@@ -29,7 +53,42 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST - create a new product
+
+
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Create a new product
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               material:
+ *                 type: string
+ *               color:
+ *                 type: string
+ *               printTimeHours:
+ *                 type: number
+ *               price:
+ *                 type: number
+ *               inStock:
+ *                 type: boolean
+ *     responses:
+ *       201:
+ *         description: Product created
+ *       400:
+ *         description: Validation error
+ */
 router.post('/',
     body('name').notEmpty().withMessage('Name is required'),
     body('description').notEmpty().withMessage('Description is required'),
@@ -60,7 +119,48 @@ router.post('/',
 );
 
 
-// PUT - update a product
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Update a product
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               material:
+ *                 type: string
+ *               color:
+ *                 type: string
+ *               printTimeHours:
+ *                 type: number
+ *               price:
+ *                 type: number
+ *               inStock:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Product updated
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: Product not found
+ */
 router.put('/:id',
     body('name').notEmpty().withMessage('Name is required'),
     body('description').notEmpty().withMessage('Description is required'),
@@ -95,6 +195,23 @@ router.put('/:id',
     }
 );
 
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted
+ *       404:
+ *         description: Product not found
+ */
 // DELETE - remove a product
 router.delete('/:id', async (req, res) => {
     try {
