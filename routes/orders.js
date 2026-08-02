@@ -3,17 +3,30 @@ const router = express.Router();
 const connectDB = require('../db');
 const { ObjectId } = require('mongodb');
 const { body, validationResult } = require('express-validator');
+const ensureAuthenticated = require('../middleware/auth');
 
 /**
  * @swagger
- * /orders:
- *   get:
- *     summary: Get all orders
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     security:
+ *       - googleAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: A list of orders
+ *         description: Product deleted
+ *       401:
+ *         description: Not logged in
+ *       404:
+ *         description: Product not found
  */
-router.get('/', async (req, res) => {
+router.get('/',ensureAuthenticated, async (req, res) => {
     try {
         const db = await connectDB();
         const orders = await db.collection('orders').find().toArray();
@@ -29,6 +42,8 @@ router.get('/', async (req, res) => {
  * /orders/{id}:
  *   get:
  *     summary: Get an order by id
+ *     security:
+ *       - googleAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -38,10 +53,12 @@ router.get('/', async (req, res) => {
  *     responses:
  *       200:
  *         description: A single order
+ *       401:
+ *         description: Not logged in
  *       404:
  *         description: Order not found
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id',ensureAuthenticated, async (req, res) => {
     try {
         const db = await connectDB();
         const order = await db.collection('orders').findOne({ _id: new ObjectId(req.params.id) });
@@ -59,6 +76,8 @@ router.get('/:id', async (req, res) => {
  * /orders:
  *   post:
  *     summary: Create a new order
+ *     security:
+ *       - googleAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -83,8 +102,10 @@ router.get('/:id', async (req, res) => {
  *         description: Order created
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Not logged in
  */
-router.post('/',
+router.post('/',ensureAuthenticated,
     body('customerName').notEmpty().withMessage('Customer name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
     body('productId').notEmpty().withMessage('Product id is required'),
@@ -116,6 +137,8 @@ router.post('/',
  * /orders/{id}:
  *   put:
  *     summary: Update an order
+ *     security:
+ *       - googleAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -146,10 +169,12 @@ router.post('/',
  *         description: Order updated
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Not logged in
  *       404:
  *         description: Order not found
  */
-router.put('/:id',
+router.put('/:id',ensureAuthenticated,
     body('customerName').notEmpty().withMessage('Customer name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
     body('productId').notEmpty().withMessage('Product id is required'),
@@ -186,6 +211,8 @@ router.put('/:id',
  * /orders/{id}:
  *   delete:
  *     summary: Delete an order
+ *     security:
+ *       - googleAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -195,10 +222,12 @@ router.put('/:id',
  *     responses:
  *       200:
  *         description: Order deleted
+ *       401:
+ *         description: Not logged in
  *       404:
  *         description: Order not found
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',ensureAuthenticated, async (req, res) => {
     try {
         const db = await connectDB();
         const result = await db.collection('orders').deleteOne({ _id: new ObjectId(req.params.id) });

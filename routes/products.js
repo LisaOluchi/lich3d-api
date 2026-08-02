@@ -3,6 +3,7 @@ const router = express.Router();
 const connectDB = require('../db');
 const { ObjectId } = require('mongodb');
 const { body, validationResult } = require('express-validator');
+const ensureAuthenticated = require('../middleware/auth');
 
 /**
  * @swagger
@@ -60,6 +61,8 @@ router.get('/:id', async (req, res) => {
  * /products:
  *   post:
  *     summary: Create a new product
+ *     security:
+ *       - googleAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -88,8 +91,10 @@ router.get('/:id', async (req, res) => {
  *         description: Product created
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Not logged in
  */
-router.post('/',
+router.post('/',ensureAuthenticated,
     body('name').notEmpty().withMessage('Name is required'),
     body('description').notEmpty().withMessage('Description is required'),
     body('category').notEmpty().withMessage('Category is required'),
@@ -124,6 +129,8 @@ router.post('/',
  * /products/{id}:
  *   put:
  *     summary: Update a product
+ *     security:
+ *       - googleAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -158,10 +165,12 @@ router.post('/',
  *         description: Product updated
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Not logged in
  *       404:
  *         description: Product not found
  */
-router.put('/:id',
+router.put('/:id',ensureAuthenticated,
     body('name').notEmpty().withMessage('Name is required'),
     body('description').notEmpty().withMessage('Description is required'),
     body('category').notEmpty().withMessage('Category is required'),
@@ -200,6 +209,8 @@ router.put('/:id',
  * /products/{id}:
  *   delete:
  *     summary: Delete a product
+ *     security:
+ *       - googleAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -209,11 +220,12 @@ router.put('/:id',
  *     responses:
  *       200:
  *         description: Product deleted
+ *       401:
+ *         description: Not logged in
  *       404:
  *         description: Product not found
  */
-// DELETE - remove a product
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', ensureAuthenticated, async (req, res) => {
     try {
         const db = await connectDB();
         const result = await db.collection('products').deleteOne({ _id: new ObjectId(req.params.id) });

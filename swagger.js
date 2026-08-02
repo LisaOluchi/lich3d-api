@@ -17,7 +17,20 @@ const options = {
         url: 'http://localhost:3000',
         description: 'Local server'
       }
-    ]
+    ],
+    components: {
+      securitySchemes: {
+        googleAuth: {
+          type: 'oauth2',
+          flows: {
+            implicit: {
+              authorizationUrl: '/auth/google',
+              scopes: {}
+            }
+          }
+        }
+      }
+    }
   },
   apis: ['./routes/*.js']
 };
